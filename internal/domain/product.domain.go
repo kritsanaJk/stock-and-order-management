@@ -8,10 +8,12 @@ import (
 type ProductUsecase interface {
 	Create(req dto.CreateProductRequest) error
 	List(res *[]dto.ProductResponse) error
+	Product(productID int, res *dto.ProductResponse) error
 }
 
 type ProductRepository interface {
 	Create(product model.Product) error
 	CheckDuplicate(name string, product *model.Product) error
 	List(res *[]model.Product) error
+	GetByID(productID int, res *model.Product) error
 }

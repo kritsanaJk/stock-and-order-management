@@ -61,3 +61,19 @@ func (u *productUsecase) List(res *[]dto.ProductResponse) error {
 
 	return nil
 }
+
+func (u *productUsecase) Product(productID int, res *dto.ProductResponse) error {
+	product := &model.Product{}
+	if err := u.repo.GetByID(productID, product); err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errors.New(sharedError.ERR_NOT_FOUND)
+		}
+		return err
+	}
+	if err := copier.Copy(&res, &product); err != nil {
+		return err
+	}
+
+	return nil
+
+}

@@ -28,3 +28,7 @@ func (r *productRepository) CheckDuplicate(name string, product *model.Product) 
 func (r *productRepository) List(res *[]model.Product) error {
 	return r.DB.Model(&model.Product{}).Order("id asc").Find(&res).Error
 }
+
+func (r *productRepository) GetByID(productID int, res *model.Product) error {
+	return r.DB.Model(&model.Product{}).Where("id = ?", productID).First(&res).Error
+}

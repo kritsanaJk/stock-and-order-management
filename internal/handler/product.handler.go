@@ -6,6 +6,7 @@ import (
 	"stock-and-order-management/internal/dto"
 	"stock-and-order-management/shared/error"
 	"stock-and-order-management/shared/response"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -67,10 +68,52 @@ func (h *productHandler) List(c *gin.Context) {
 				Message: http.StatusText(http.StatusInternalServerError),
 			},
 		})
+		return
 	}
-	c.AbortWithStatusJSON(http.StatusCreated, response.SuccessfullyResponse{
+	c.AbortWithStatusJSON(http.StatusOK, response.SuccessfullyResponse{
 		Message: "Get list product is successfully",
 		Items:   res,
+	})
+
+}
+
+func (h *productHandler) GetByID(c *gin.Context) {
+	productIDStr := c.Param("id")
+	res := dto.ProductResponse{}
+
+	productID, err := strconv.Atoi(productIDStr)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, error.ErrorResponse{
+			Error: error.ErrorDetailResponse{
+				Code:    error.ERR_BAD_REQUEST,
+				Message: "id is invalid",
+			},
+		})
+	}
+
+	if err := h.usecase.Product((productID), &res); err != nil {
+		if err.Error() == error.ERR_NOT_FOUND {
+			c.AbortWithStatusJSON(http.StatusNotFound, error.ErrorResponse{
+				Error: error.ErrorDetailResponse{
+					Code:    error.ERR_NOT_FOUND,
+					Message: "Product is not found",
+				},
+			})
+
+			return
+		}
+
+		c.AbortWithStatusJSON(http.StatusInternalServerError, error.ErrorResponse{
+			Error: error.ErrorDetailResponse{
+				Code:    error.ERR_INTERNAL_SERVER_ERROR,
+				Message: http.StatusText(http.StatusInternalServerError),
+			},
+		})
+		return
+	}
+	c.AbortWithStatusJSON(http.StatusOK, response.SuccessfullyResponse{
+		Message: "Get  product is successfully",
+		Item:    res,
 	})
 
 }

@@ -24,6 +24,7 @@ func ProductRouter(version *gin.RouterGroup) {
 
 	productRouter.POST("", handler.CreateProduct)
 	productRouter.GET("", handler.List)
+	productRouter.GET("/:id", handler.GetByID)
 
 }
 
