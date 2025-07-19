@@ -48,3 +48,16 @@ func (u *productUsecase) Create(req dto.CreateProductRequest) error {
 	return u.repo.Create(*product)
 
 }
+
+func (u *productUsecase) List(res *[]dto.ProductResponse) error {
+	products := &[]model.Product{}
+	if err := u.repo.List(products); err != nil {
+		return err
+	}
+
+	if err := copier.Copy(&res, &products); err != nil {
+		return err
+	}
+
+	return nil
+}

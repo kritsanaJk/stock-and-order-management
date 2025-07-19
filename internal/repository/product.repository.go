@@ -22,5 +22,9 @@ func (r *productRepository) Create(product model.Product) error {
 }
 
 func (r *productRepository) CheckDuplicate(name string, product *model.Product) error {
-	return r.DB.Debug().Model(&model.Product{}).Where("lower(name) = lower(?)", name).First(&product).Error
+	return r.DB.Model(&model.Product{}).Where("lower(name) = lower(?)", name).First(&product).Error
+}
+
+func (r *productRepository) List(res *[]model.Product) error {
+	return r.DB.Model(&model.Product{}).Order("id asc").Find(&res).Error
 }

@@ -23,6 +23,7 @@ func ProductRouter(version *gin.RouterGroup) {
 	productRouter := version.Group("/products")
 
 	productRouter.POST("", handler.CreateProduct)
+	productRouter.GET("", handler.List)
 
 }
 

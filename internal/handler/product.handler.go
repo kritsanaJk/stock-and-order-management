@@ -57,3 +57,20 @@ func (h *productHandler) CreateProduct(c *gin.Context) {
 		Message: "Create product is successfully",
 	})
 }
+
+func (h *productHandler) List(c *gin.Context) {
+	res := []dto.ProductResponse{}
+	if err := h.usecase.List(&res); err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, error.ErrorResponse{
+			Error: error.ErrorDetailResponse{
+				Code:    error.ERR_INTERNAL_SERVER_ERROR,
+				Message: http.StatusText(http.StatusInternalServerError),
+			},
+		})
+	}
+	c.AbortWithStatusJSON(http.StatusCreated, response.SuccessfullyResponse{
+		Message: "Get list product is successfully",
+		Items:   res,
+	})
+
+}
