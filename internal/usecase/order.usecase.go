@@ -8,7 +8,7 @@ type orderUsecase struct {
 }
 
 func NewOrderUsecase(repo domain.OrderRepository, productRepo domain.ProductRepository) domain.OrderUsecase {
-	return orderUsecase{
+	return &orderUsecase{
 		repo:        repo,
 		productRepo: productRepo,
 	}

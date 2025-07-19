@@ -11,7 +11,7 @@ type orderRepository struct {
 }
 
 func NewOrderRepository(db *gorm.DB) domain.OrderRepository {
-	return orderRepository{
+	return &orderRepository{
 		DB: db,
 	}
 }

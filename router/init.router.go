@@ -9,24 +9,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRouter(version gin.RouterGroup) {
+func InitRouter(version *gin.RouterGroup) {
 	ProductRouter(version)
 	OrderRouter(version)
 }
 
-func ProductRouter(version gin.RouterGroup) {
+func ProductRouter(version *gin.RouterGroup) {
 
 	repo := repository.NewProductRepository(&database.DB)
 	usecase := usecase.NewProductUsecase(repo)
-	_ = handler.NewProducthandler(usecase)
+	handler := handler.NewProductHandler(usecase)
+
+	productRouter := version.Group("/products")
+
+	productRouter.POST("", handler.CreateProduct)
+	productRouter.GET("", handler.List)
+	productRouter.GET("/:id", handler.GetByID)
 
 }
 
-func OrderRouter(version gin.RouterGroup) {
+func OrderRouter(version *gin.RouterGroup) {
 
 	repo := repository.NewOrderRepository(&database.DB)
 	productRepo := repository.NewProductRepository(&database.DB)
 	usecase := usecase.NewOrderUsecase(repo, productRepo)
-	_ = handler.NewProducthandler(usecase)
+	_ = handler.NewOrderHandler(usecase)
 
 }
