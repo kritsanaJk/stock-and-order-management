@@ -89,6 +89,7 @@ func (h *productHandler) GetByID(c *gin.Context) {
 				Message: "id is invalid",
 			},
 		})
+		return
 	}
 
 	if err := h.usecase.Product((productID), &res); err != nil {
