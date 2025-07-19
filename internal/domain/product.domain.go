@@ -1,7 +1,15 @@
 package domain
 
+import (
+	"stock-and-order-management/internal/dto"
+	"stock-and-order-management/internal/model"
+)
+
 type ProductUsecase interface {
+	Create(req dto.CreateProductRequest) error
 }
 
 type ProductRepository interface {
+	Create(product model.Product) error
+	CheckDuplicate(name string, product *model.Product) error
 }

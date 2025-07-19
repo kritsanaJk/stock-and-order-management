@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"stock-and-order-management/infrastructure/config"
 	"stock-and-order-management/infrastructure/database"
+	"stock-and-order-management/router"
 	"syscall"
 	"time"
 
@@ -31,6 +32,8 @@ func main() {
 	app := gin.Default()
 	app.SetTrustedProxies(nil)
 
+	routerGroup := app.Group("")
+	router.InitRouter(routerGroup)
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGALRM)
 
