@@ -16,4 +16,5 @@ type ProductRepository interface {
 	CheckDuplicate(name string, product *model.Product) error
 	List(res *[]model.Product) error
 	GetByID(productID int, res *model.Product) error
+	Update(productID int, req model.Product) error
 }

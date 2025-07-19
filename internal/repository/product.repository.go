@@ -32,3 +32,7 @@ func (r *productRepository) List(res *[]model.Product) error {
 func (r *productRepository) GetByID(productID int, res *model.Product) error {
 	return r.DB.Model(&model.Product{}).Where("id = ?", productID).First(&res).Error
 }
+
+func (r *productRepository) Update(productID int, req model.Product) error {
+	return r.DB.Model(&model.Product{}).Where("id = ?", productID).Save(&req).Error
+}

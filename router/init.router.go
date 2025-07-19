@@ -33,6 +33,10 @@ func OrderRouter(version *gin.RouterGroup) {
 	repo := repository.NewOrderRepository(&database.DB)
 	productRepo := repository.NewProductRepository(&database.DB)
 	usecase := usecase.NewOrderUsecase(repo, productRepo)
-	_ = handler.NewOrderHandler(usecase)
+	handler := handler.NewOrderHandler(usecase)
+
+	orderRouter := version.Group("/orders")
+
+	orderRouter.POST("", handler.CreateOrder)
 
 }
